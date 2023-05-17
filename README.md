@@ -29,4 +29,4 @@ Vue.component(Notice.name, Notice);
 | jump | 一次滚动子元素个数 | 1(Number) |
 | autoplay | 自动切换的时间间隔，单位为毫秒 | 3000(Number) |
 | list | 滚动列表 | [] (Array) |
-| setting | 所有参数集合 | 如：{height: 40,jump: 1,}(Object--目前只支持了距离的这两个) |
+| setting | 所有参数集合 | 如：{height: 40,jump: 1,autoplay:1000,...}(Object) |

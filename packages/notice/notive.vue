@@ -10,8 +10,8 @@
     <!-- 支持scss的可使用：:class="animate ? 'toUp' : ''" -->
     <div
       :style="{
-        height: `${childHeight}px`,
-        'line-height': `${childHeight}px`,
+        height: computedChildHeight,
+        'line-height': computedChildHeight,
         'margin-top': animate ? upPx : '',
         transition: animate ? 'all 1s' : '',
       }"
@@ -58,6 +58,10 @@ export default {
       const { height } = this.setting;
       return height ? height + "px" : this.height + "px";
     },
+    computedChildHeight() {
+      const { childHeight } = this.setting;
+      return childHeight ? childHeight + "px" : this.childHeight + "px";
+    },
     upPx() {
       const { jump, childHeight } = this.setting;
       return `-${(jump || this.jump) * (childHeight || this.childHeight)}px`;
@@ -71,7 +75,11 @@ export default {
     };
   },
   mounted() {
-    this.intervalId = setInterval(this.showMarquee, this.autoplay);
+    const { autoplay = this.autoplay } = this.setting;
+    this.intervalId = setInterval(
+      this.showMarquee,
+      autoplay == 1000 ? 1100 : autoplay
+    );
   },
   destory() {
     clearInterval(this.intervalId);

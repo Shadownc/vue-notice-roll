@@ -6,6 +6,7 @@
       :setting="{
         height: 40,
         jump: 1,
+        autoplay:3000
       }"
     >
       <div v-for="(item, index) in msg" :key="index">{{ item }}</div>
