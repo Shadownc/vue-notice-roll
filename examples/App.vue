@@ -1,16 +1,17 @@
 <template>
   <div id="app">
-    <IMNotice
-      class="wrap"
-      :list="msg"
-      :setting="{
-        height: 40,
-        jump: 1,
-        autoplay:3000
-      }"
-    >
-      <div v-for="(item, index) in msg" :key="index">{{ item }}</div>
-    </IMNotice>
+    <div class="wrap">
+      <IMNotice
+        :list="msg"
+        :setting="{
+          jump: 1,
+          duration: 3000,
+          autoplay:true
+        }"
+      >
+        <div style="height:40px;line-height: 40px;" v-for="(item, index) in msg" :key="index">{{ item }}</div>
+      </IMNotice>
+    </div>
   </div>
 </template>
 
@@ -41,6 +42,7 @@ export default {
 
 <style lang="scss" scoped>
 .wrap {
+  height: 40px;
   color: #ed6a0c;
   font-size: 14px;
   background-color: #fffbe8;

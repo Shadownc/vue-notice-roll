@@ -9,7 +9,7 @@
     "url": "https://gitee.com/cherubic_c/vue-notice-roll"
   },
   "homepage": "https://github.com/Shadownc",
-  "version": "0.1.3",
+  "version": "0.1.8",
   "description": "Vue垂直滚动公告插件",
   "main": "lib/vue-notice-roll.umd.min.js",
   "keywords": [

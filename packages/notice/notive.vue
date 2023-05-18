@@ -1,8 +1,7 @@
 <template>
   <div
+    class="notice-container"
     :style="{
-      height: computedHeight,
-      overflow: 'hidden',
       '--upPx': upPx,
     }"
   >
@@ -10,8 +9,6 @@
     <!-- 支持scss的可使用：:class="animate ? 'toUp' : ''" -->
     <div
       :style="{
-        height: computedChildHeight,
-        'line-height': computedChildHeight,
         'margin-top': animate ? upPx : '',
         transition: animate ? 'all 1s' : '',
       }"
@@ -25,22 +22,19 @@
 export default {
   name: "IMNotice",
   props: {
-    //父级高级
-    height: {
-      type: Number,
-      default: 40,
-    },
-    //单个子元素高度
-    childHeight: {
-      type: Number,
-      default: 40,
-    },
-    //一次滚动子元素个数
     jump: {
       type: Number,
       default: 1,
     },
+    showNumber:{
+      type: Number,
+      default: 1,
+    },
     autoplay: {
+      type: Boolean,
+      default: false,
+    },
+    duration: {
       type: Number,
       default: 3000,
     },
@@ -53,42 +47,41 @@ export default {
       default: () => ({}),
     },
   },
-  computed: {
-    computedHeight() {
-      const { height } = this.setting;
-      return height ? height + "px" : this.height + "px";
-    },
-    computedChildHeight() {
-      const { childHeight } = this.setting;
-      return childHeight ? childHeight + "px" : this.childHeight + "px";
-    },
-    upPx() {
-      const { jump, childHeight } = this.setting;
-      return `-${(jump || this.jump) * (childHeight || this.childHeight)}px`;
-    },
-  },
-
   data() {
     return {
       intervalId: null,
       animate: false,
+      upPx: null,
     };
   },
   mounted() {
-    const { autoplay = this.autoplay } = this.setting;
-    this.intervalId = setInterval(
-      this.showMarquee,
-      autoplay == 1000 ? 1100 : autoplay
-    );
+    const {
+      duration = this.duration,
+      autoplay = this.autoplay,
+      jump = this.jump,
+      showNumber=this.showNumber
+    } = this.setting;
+    this.$nextTick(() => {
+      let rollDistance = parseFloat(
+        document.getElementsByClassName("notice-container")[0].offsetHeight/showNumber
+      );
+      this.upPx = `-${jump * rollDistance}px`;
+    });
+
+    if (autoplay) {
+      this.intervalId = setInterval(
+        this.showMarquee,
+        duration == 1000 ? 1100 : duration
+      );
+    }
   },
   destory() {
     clearInterval(this.intervalId);
   },
   methods: {
     showMarquee() {
-      const { jump, childHeight } = this.setting;
+      const { jump } = this.setting;
       const count = jump || this.jump;
-      const distance = count * (childHeight || this.childHeight);
 
       this.animate = true;
 
@@ -103,6 +96,12 @@ export default {
   },
 };
 </script>
+<style scoped>
+.notice-container {
+  height: 100%;
+  overflow: hidden;
+}
+</style>
 <style lang="scss" scoped>
 .toUp {
   margin-top: var(--upPx) !important;
